@@ -10,7 +10,6 @@ const withAuth = require('../utils/auth.js');
     try {
       // Get all posts and JOIN with user data
       const postData = await Post.findAll({
-        raw: true,
         order: [["id", "DESC"]],
         include: 
           {
@@ -26,7 +25,7 @@ const withAuth = require('../utils/auth.js');
       res.render('all-posts-admin', { 
         layout: 'dashboard',
         posts,
-        logged_in: true
+        logged_in: req.session.logged_in
       });
     } catch (err) {
       res.status(500).json(err);
@@ -35,8 +34,15 @@ const withAuth = require('../utils/auth.js');
 
 
 //for new posts
-  router.get('/new', (req, res) => {
-    res.render('new-post');
+  router.get('/new', withAuth, (req, res) => {
+    try {
+    res.render('new-post', {
+      layout: 'dashboard', logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
   });
 
   module.exports = router;

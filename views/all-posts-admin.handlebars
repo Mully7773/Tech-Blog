@@ -1,8 +1,11 @@
 <div class="posts list-group">
       {{#each posts as |post|}}
-    <a class="list-item flex-row justify-space-between" href="/dashboard/edit/{{id}}">
-      <div>{{title}}</div>
+    <a class="list-item flex-row justify-space-between" href="/dashboard/post/{{post.id}}">
+      <div>{{post.title}}</div>
       <div>{{format_date createdAt}}</div>
     </a>
   {{/each}}
+</div>
+<div class="row col-2 mx-auto mt-5 p-2" >
+<button class="btn btn-primary"><a href="/dashboard/new">New Post</a></button>
 </div>
