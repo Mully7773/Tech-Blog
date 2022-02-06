@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { DESCRIBE } = require('sequelize/types/lib/query-types');
 const { Post, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
@@ -8,7 +7,6 @@ const withAuth = require('../utils/auth');
     try {
       // Get all posts and JOIN with user data
       const postData = await Post.findAll({
-        raw: true,
         order: [["id", "DESC"]],
         include: 
           {
@@ -18,12 +16,12 @@ const withAuth = require('../utils/auth');
       });
   
       // Serialize data so the template can read it
-      const posts = posts.map((post) => post.get({ plain: true }));
+      const posts = postData.map((post) => post.get({ plain: true }));
   
       // Pass serialized data and session flag into template
       res.render('all-posts', { 
         posts, 
-        logged_in: req.session.logged_in 
+        loggedIn: req.session.loggedIn 
       });
     } catch (err) {
       res.status(500).json(err);
@@ -51,7 +49,7 @@ const withAuth = require('../utils/auth');
   
       res.render('single-post', {
         post,
-        logged_in: req.session.logged_in
+        loggedIn: req.session.loggedIn
       });
     } catch (err) {
       res.status(500).json(err);
@@ -61,18 +59,18 @@ const withAuth = require('../utils/auth');
 
   
 router.get('/login',  (req, res) => {
-    // if(req.session.loggedIn) {
-    //     res.redirect('/');
-    //     return;
-    //}
+    if(req.session.loggedIn) {
+        res.redirect('/');
+        return;
+    }
     res.render('login')
   });
 
 router.get('/signup', (req, res) => {
-    // if(req.session.loggedIn) {
-    //     res.redirect('/');
-    //     return;
-    // }
+    if(req.session.loggedIn) {
+        res.redirect('/');
+        return;
+    }
     res.render('signup')
 });
 
