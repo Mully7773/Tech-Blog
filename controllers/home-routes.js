@@ -3,22 +3,7 @@ const { DESCRIBE } = require('sequelize/types/lib/query-types');
 const { Post, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
-// router.get('/', async (req, res) => {
-//     try {
-//         const posts = await Post.findAll({
-//         raw: true,
-//         order: [["id", "DESC"]],
-//         });
-//         const postData = {
-//             posts
-//         }
-//         res.render('homepage', postData);  
-//     } catch (err) {
-//                 console.log("There's an error:", err);
-//            }
-    
-//   });
-
+//get all posts
   router.get('/', async (req, res) => {
     try {
       // Get all posts and JOIN with user data
@@ -39,6 +24,34 @@ const withAuth = require('../utils/auth');
       res.render('all-posts', { 
         posts, 
         logged_in: req.session.logged_in 
+      });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+
+  //get one post
+  router.get('/post/:id', async (req, res) => {
+    try {
+      const postData = await Post.findByPk(req.params.id, {
+        include: [
+          {
+            model: Comment,
+            include: {
+              model: User,
+            }
+          },
+        {
+            model: User,
+        }
+        ],
+      });
+  
+      const post = postData.get({ plain: true });
+  
+      res.render('single-post', {
+        post,
+        logged_in: req.session.logged_in
       });
     } catch (err) {
       res.status(500).json(err);
