@@ -1,0 +1,12 @@
+<section class="posts">
+    {{#each posts as |post|}}
+    <div class="card-header justify-space-between flex-row">
+        <h1>
+            <a href="/post/{{post.id}}">{{post.title}}</a>
+        </h1>
+    </div>
+    <div>
+        <p id="postTime">{{post.createdAt}}</p>
+        <p id="postAuthor">Posted By: {{post.user.username}}</p>
+    </div>
+</section>
