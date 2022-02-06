@@ -10,9 +10,11 @@ router.post('/', async (req, res) => {
         password: req.body.password
     });
 
+    const currentUser = userData.get({ plain: true })
     req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.loggedIn = true;
+      req.session.logged_in = true;
+      req.session.userId = currentUser.id;
+      req.session.username = currentUser.username;
 
       res.status(200).json(userData);
     });
@@ -25,7 +27,7 @@ router.post('/', async (req, res) => {
 //User login
 router.post('/login', async (req, res) => {
     try {
-      const userData = await User.findOne({ where: { email: req.body.username } });
+      const userData = await User.findOne({ where: { username: req.body.username } });
   
       if (!userData) {
         res
@@ -43,21 +45,24 @@ router.post('/login', async (req, res) => {
         return;
       }
   
+      const currentUser = userData.get({ plain: true })
       req.session.save(() => {
-        req.session.user_id = userData.id;
-        req.session.loggedIn = true;
+        req.session.logged_in = true;
+        req.session.username = currentUser.username;
+        req.session.userId = userData.id;
         
         res.json({ user: userData, message: 'You are now logged in!' });
       });
   
     } catch (err) {
+      console.log(err);
       res.status(400).json(err);
     }
   });
 
 //User logout
   router.post('/logout', (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session.logged_in) {
       req.session.destroy(() => {
         res.status(204).end();
       });

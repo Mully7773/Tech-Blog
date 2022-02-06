@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/coding-boot-camp/module-14-project-mvc#readme",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.1",
     "connect-session-sequelize": "^6.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -25,5 +25,8 @@
     "express-session": "^1.17.0",
     "mysql2": "^2.0.1",
     "sequelize": "^5.21.2"
+  },
+  "devDependencies": {
+    "@types/express-handlebars": "^6.0.0"
   }
 }

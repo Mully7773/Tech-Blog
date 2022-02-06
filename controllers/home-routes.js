@@ -21,7 +21,7 @@ const withAuth = require('../utils/auth');
       // Pass serialized data and session flag into template
       res.render('all-posts', { 
         posts, 
-        loggedIn: req.session.loggedIn 
+        logged_in: req.session.logged_in 
       });
     } catch (err) {
       res.status(500).json(err);
@@ -49,7 +49,7 @@ const withAuth = require('../utils/auth');
   
       res.render('single-post', {
         post,
-        loggedIn: req.session.loggedIn
+        logged_in: req.session.logged_in
       });
     } catch (err) {
       res.status(500).json(err);
@@ -59,7 +59,7 @@ const withAuth = require('../utils/auth');
 
   
 router.get('/login',  (req, res) => {
-    if(req.session.loggedIn) {
+    if(req.session.logged_in) {
         res.redirect('/');
         return;
     }
@@ -67,7 +67,7 @@ router.get('/login',  (req, res) => {
   });
 
 router.get('/signup', (req, res) => {
-    if(req.session.loggedIn) {
+    if(req.session.logged_in) {
         res.redirect('/');
         return;
     }

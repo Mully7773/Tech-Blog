@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const session = require('express-session');
-const res = require('express/lib/response');
+const response = require('express/lib/response');
 const { Post, User, Comment } = require('../models');
+const withAuth = require('../utils/auth.js');
 
 
 
@@ -25,7 +26,7 @@ const { Post, User, Comment } = require('../models');
       res.render('all-posts-admin', { 
         layout: 'dashboard',
         posts,
-        loggedIn: true
+        logged_in: true
       });
     } catch (err) {
       res.status(500).json(err);
