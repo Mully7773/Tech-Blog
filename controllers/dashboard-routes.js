@@ -10,11 +10,10 @@ const withAuth = require('../utils/auth.js');
     try {
       // Get all posts and JOIN with user data
       const postData = await Post.findAll({
-        order: [["id", "DESC"]],
+        order: [["createdAt", "DESC"]],
         include: 
           {
             model: User,
-            attributes: ['username']
           },
       });
   
@@ -23,21 +22,25 @@ const withAuth = require('../utils/auth.js');
   
       // Pass serialized data and session flag into template
       res.render('all-posts-admin', { 
-        layout: 'dashboard',
         posts,
-        logged_in: req.session.logged_in
+        layout: 'dashboard',
+        logged_in: req.session.logged_in,
+        // userSession: req.session.username
       });
     } catch (err) {
+      console.log(err)
       res.status(500).json(err);
     }
   });
 
 
 //for new posts
-  router.get('/new', withAuth, (req, res) => {
+  router.get('/new', withAuth, async (req, res) => {
     try {
     res.render('new-post', {
-      layout: 'dashboard', logged_in: req.session.logged_in
+      layout: 'dashboard',
+      logged_in: req.session.logged_in,
+      // userSession: req.session.username
     });
   } catch (err) {
     console.log(err);

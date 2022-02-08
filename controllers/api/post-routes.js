@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 
 //Create a new post
   router.post('/', withAuth, async (req, res) => {
-    console.log(req.body)
+    console.log("test2", req.body)
       try {
         const postData = await Post.create({
             title: req.body.title,
@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
         const postData = await Post.destroy({
           where: {
             id: req.params.id,
-            user_id: req.session.user_id,
+            userId: req.session.userId,
           },
         });
     
